@@ -21,12 +21,14 @@ node .output/server/index.mjs
 ./docker_run.sh
 ```
 
-or
+or with compose
 
 ```bash
 docker build -t day-finder .
-docker run -p 3000:3000 -d day-finder
+docker-compose up -d
 ```
+
+if you want you can use sth like nginx proxy manager as a reverse proxy to get it behind a domain and with ssl
 
 #### Attention
 

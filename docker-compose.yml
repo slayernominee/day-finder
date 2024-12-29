@@ -1,0 +1,15 @@
+version: "3"
+services:
+    dayfinder:
+        container_name: dayfinder
+        restart: unless-stopped
+        ports:
+            - 3000:3000
+        image: dayfinder
+#        networks:
+#            - n1
+
+#networks:
+#    n1:
+#        name: nginx_proxy_manager_default
+#        external: true
