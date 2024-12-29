@@ -40,7 +40,8 @@ const value = ref({
 
                         <RangeCalendar
                             id="calendar"
-                            weekdayFormat="narrow"
+                            weekdayFormat="short"
+                            weekStartsOn="1"
                             v-model="value"
                             :maxValue="max_value"
                             :minValue="start"
