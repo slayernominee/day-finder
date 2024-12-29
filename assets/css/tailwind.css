@@ -73,6 +73,6 @@
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground py-6 px-16;
+        @apply bg-background text-foreground py-4 lg:py-6 px-16;
     }
 }

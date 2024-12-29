@@ -18,6 +18,13 @@ const props = defineProps({
         default: false,
     },
 });
+
+const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const dd = props.day.getDate();
+const mm = props.day.getMonth() + 1;
+const yyyy = props.day.getFullYear();
+const yy = yyyy.toString().slice(-2);
 </script>
 
 <template>
@@ -27,7 +34,14 @@ const props = defineProps({
         @click="$emit('switchInOut', day)"
     >
         <CardHeader>
-            <CardTitle class="text-center">{{ day.toLocaleDateString("de-DE") }}</CardTitle>
+            <CardTitle class="text-center flex sm:relative">
+                <span class="lg:hidden mr-2">{{ weekDays[day.getDay()].slice(0, 3) }}, </span>
+                <span class="flex">
+                    {{ dd }}.{{ mm }}.
+                    <span class="hidden xl:block">{{ yyyy }}</span>
+                    <span class="xl:hidden">{{ yy }}</span></span
+                >
+            </CardTitle>
         </CardHeader>
         <CardContent>
             <Badge class="mx-2 my-1" v-for="p in participants">{{ p }}</Badge>

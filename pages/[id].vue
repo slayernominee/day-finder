@@ -24,7 +24,7 @@ useHead({
 });
 
 const days = ref(
-    data.value.days.map((d) => {
+    data.value.days.map((d: any) => {
         d.date = new Date(d.date);
         d.participants = d.participants;
         return d;
@@ -34,7 +34,7 @@ const days = ref(
 const configured = ref(data.value.configured);
 
 const deploy = async (projectname: string, range: {}) => {
-    const { data: resp } = await useFetch("/api/configureTimetable", {
+    const { data: resp }: any = await useFetch("/api/configureTimetable", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const deploy = async (projectname: string, range: {}) => {
     configured.value = resp.value.configured;
 
     // update the days
-    days.value = resp.value.days.map((d) => {
+    days.value = resp.value.days.map((d: any) => {
         d.date = new Date(d.date);
         d.participants = d.participants;
         return d;
@@ -61,7 +61,7 @@ const deploy = async (projectname: string, range: {}) => {
 
 const showNameRequest = ref(false);
 
-const name = useCookie("name", {
+const name: any = useCookie("name", {
     default: () => {
         return null;
     },
@@ -80,12 +80,12 @@ const switchInOut = async (day: any) => {
 
     let add = true;
 
-    days.value = days.value.map((d) => {
+    days.value = days.value.map((d: any) => {
         if (d.date.getTime() === day.getTime()) {
             // check if the name is in the participants
             if (d.participants.includes(name.value)) {
                 // remove the name
-                d.participants = d.participants.filter((p) => p !== name.value);
+                d.participants = d.participants.filter((p: any) => p !== name.value);
                 d.isIn = false;
                 add = false;
             } else {
@@ -128,19 +128,20 @@ const switchInOut = async (day: any) => {
         <NameRequest :open="showNameRequest" @setName="setName" />
 
         <div v-if="configured">
-            <div class="grid grid-cols-7 gap-2">
+            <div class="grid lg:grid-cols-7 md:grid-cols-4 sm:grid-cols-3 gap-2">
                 <div
                     v-for="weekday in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
                     :key="weekday"
-                    class="text-center mb-6"
+                    class="text-center mb-6 hidden lg:block"
                 >
                     <span>{{ weekday }}</span>
                 </div>
 
                 <!-- monday align the days -->
-                <div v-for="i in Array((days[0].date.getDay() + 6) % 7).keys()"></div>
+                <div class="hidden lg:block" v-for="i in Array((days[0].date.getDay() + 6) % 7).keys()"></div>
 
                 <Day
+                    class="w-[70vw] sm:w-auto"
                     v-for="d in days"
                     :day="d.date"
                     :participants="d.participants"
