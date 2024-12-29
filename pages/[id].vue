@@ -17,6 +17,8 @@ if (data.value.status == "error") {
     useRouter().push("/");
 }
 
+const project_name = ref(data.value.project_name);
+
 const days = ref(
     data.value.days.map((d) => {
         d.date = new Date(d.date);
@@ -27,17 +29,17 @@ const days = ref(
 
 const configured = ref(data.value.configured);
 
-const deploy = async (project_name: string, range: {}) => {
+const deploy = async (projectname: string, range: {}) => {
     const { data: resp } = await useFetch("/api/configureTimetable", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: { id: id.value, project_name: project_name, range: range },
+        body: { id: id.value, project_name: projectname, range: range },
     });
 
     if (resp.value.status != "success") {
-        alert("Error: " + resp.value.status);
+        alert("Deploy Error: " + resp.value.status);
         return;
     }
 
@@ -49,6 +51,8 @@ const deploy = async (project_name: string, range: {}) => {
         d.participants = d.participants;
         return d;
     });
+
+    project_name.value = projectname;
 };
 
 const showNameRequest = ref(false);

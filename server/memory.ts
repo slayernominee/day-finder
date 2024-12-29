@@ -30,6 +30,7 @@ function create() {
     memoryStore[uuid] = {
         id: uuid,
         configured: false,
+        project_name: "Untitled",
         days: [],
     };
 

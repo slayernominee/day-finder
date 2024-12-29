@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
     return {
         status: "ok",
         configured: timetable.configured,
+        project_name: timetable.project_name,
         id: timetable.id,
         days: timetable.days,
     };

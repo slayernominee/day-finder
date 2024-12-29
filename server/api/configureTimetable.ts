@@ -42,12 +42,14 @@ export default defineEventHandler(async (event) => {
     set(id, {
         id: id,
         configured: true,
+        project_name: body.project_name,
         days: days,
     });
 
     return {
         status: "success",
         configured: true,
+        project_name: body.project_name,
         id: body.id,
         days: days,
     };
