@@ -4,14 +4,20 @@ import { Calendar } from "lucide-vue-next";
 
 const router = useRouter();
 
-const createNewTimeTable = () => {
-    // TODO: get new calId from database
+const createNewTimeTable = async () => {
+    const { data }: any = await useFetch("/api/createNewTimetable", {
+        method: "POST",
+    });
+    const status = data.value.status;
 
-    // sample calId
-    const calId = "i3b19eb1inajfb2u3bri2";
+    if (status !== "success") {
+        alert("Failed to create new timetable");
+        return;
+    }
+    const calId = data.value.id;
 
     // redirect to new timetable page
-    router.push(`/t/${calId}`);
+    router.push(`/${calId}`);
 };
 </script>
 
