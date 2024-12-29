@@ -1,7 +1,16 @@
-# Simple Day Finder Calendar
+# Day Finder
 
-todo!: screenshots
+A simple calendar to find a day where everyone from your friend group has time
 
-just a simple calendar without registration etc set a name click your possible dates and finished
+![showcase calendar](.showcase/c.webp "Showcase Calendar")
+![showcase configuration](.showcase/b.webp "Showcase Configuration")
+
+### Usage
+
+```bash
+npm install
+npm run build
+node .output/server/index.mjs
+```
 
 data is saved only in memory and will on restart be lost, but that is wanted to keep it minimal and simple

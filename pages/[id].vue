@@ -19,6 +19,10 @@ if (data.value.status == "error") {
 
 const project_name = ref(data.value.project_name);
 
+useHead({
+    title: "Day Finder - " + project_name.value,
+});
+
 const days = ref(
     data.value.days.map((d) => {
         d.date = new Date(d.date);
