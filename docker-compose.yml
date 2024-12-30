@@ -5,7 +5,7 @@ services:
         restart: unless-stopped
         ports:
             - 3000:3000
-        image: dayfinder
+        image: ghcr.io/slayernominee/day-finder
 #        networks:
 #            - n1
 

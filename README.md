@@ -18,13 +18,13 @@ node .output/server/index.mjs
 #### Docker
 
 ```bash
-./docker_run.sh
+docker pull ghcr.io/slayernominee/day-finder
+docker run -p 3000:3000 -d day-finder
 ```
 
-or with compose
+or with the included docker-compose.yml file 
 
 ```bash
-docker build -t day-finder .
 docker-compose up -d
 ```
 
