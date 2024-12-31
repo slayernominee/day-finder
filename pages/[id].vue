@@ -13,110 +13,110 @@ const { data }: any = await useFetch("/api/getTimetable", {
 
 // status errror handling
 if (data.value.status == "error") {
-    alert("Error: " + data.value.status);
-    useRouter().push("/");
-}
+    const msg = data.value.message;
+    useRouter().push("/?error=" + msg);
+} else if (data.value.status == "success") {
+    const project_name = ref(data.value.project_name);
 
-const project_name = ref(data.value.project_name);
-
-useHead({
-    title: "Day Finder - " + project_name.value,
-});
-
-const days = ref(
-    data.value.days.map((d: any) => {
-        d.date = new Date(d.date);
-        d.participants = d.participants;
-        return d;
-    }),
-);
-
-const configured = ref(data.value.configured);
-
-const deploy = async (projectname: string, range: {}) => {
-    const { data: resp }: any = await useFetch("/api/configureTimetable", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: { id: id.value, project_name: projectname, range: range },
+    useHead({
+        title: "Day Finder - " + project_name.value,
     });
 
-    if (resp.value.status != "success") {
-        alert("Deploy Error: " + resp.value.status);
-        return;
-    }
+    const days = ref(
+        data.value.days.map((d: any) => {
+            d.date = new Date(d.date);
+            d.participants = d.participants;
+            return d;
+        }),
+    );
 
-    configured.value = resp.value.configured;
+    const configured = ref(data.value.configured);
 
-    // update the days
-    days.value = resp.value.days.map((d: any) => {
-        d.date = new Date(d.date);
-        d.participants = d.participants;
-        return d;
-    });
+    const deploy = async (projectname: string, range: {}) => {
+        const { data: resp }: any = await useFetch("/api/configureTimetable", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: { id: id.value, project_name: projectname, range: range },
+        });
 
-    project_name.value = projectname;
-};
-
-const showNameRequest = ref(false);
-
-const name: any = useCookie("name", {
-    default: () => {
-        return null;
-    },
-});
-
-const setName = (username: string) => {
-    name.value = username;
-    showNameRequest.value = false;
-};
-
-const switchInOut = async (day: any) => {
-    if (!name.value) {
-        showNameRequest.value = true;
-        return;
-    }
-
-    let add = true;
-
-    days.value = days.value.map((d: any) => {
-        if (d.date.getTime() === day.getTime()) {
-            // check if the name is in the participants
-            if (d.participants.includes(name.value)) {
-                // remove the name
-                d.participants = d.participants.filter((p: any) => p !== name.value);
-                d.isIn = false;
-                add = false;
-            } else {
-                // add the name
-                d.participants.push(name.value);
-                d.isIn = true;
-                add = true;
-            }
+        if (resp.value.status != "success") {
+            alert("Deploy Error: " + resp.value.status);
+            return;
         }
-        return d;
+
+        configured.value = resp.value.configured;
+
+        // update the days
+        days.value = resp.value.days.map((d: any) => {
+            d.date = new Date(d.date);
+            d.participants = d.participants;
+            return d;
+        });
+
+        project_name.value = projectname;
+    };
+
+    const showNameRequest = ref(false);
+
+    const name: any = useCookie("name", {
+        default: () => {
+            return null;
+        },
     });
 
-    // api request
-    if (add) {
-        await useFetch("/api/addParticipant", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: { id: id.value, date: day.toISOString().split("T")[0], name: name.value },
+    const setName = (username: string) => {
+        name.value = username;
+        showNameRequest.value = false;
+    };
+
+    const switchInOut = async (day: any) => {
+        if (!name.value) {
+            showNameRequest.value = true;
+            return;
+        }
+
+        let add = true;
+
+        days.value = days.value.map((d: any) => {
+            if (d.date.getTime() === day.getTime()) {
+                // check if the name is in the participants
+                if (d.participants.includes(name.value)) {
+                    // remove the name
+                    d.participants = d.participants.filter((p: any) => p !== name.value);
+                    d.isIn = false;
+                    add = false;
+                } else {
+                    // add the name
+                    d.participants.push(name.value);
+                    d.isIn = true;
+                    add = true;
+                }
+            }
+            return d;
         });
-    } else {
-        await useFetch("/api/delParticipant", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: { id: id.value, date: day.toISOString().split("T")[0], name: name.value },
-        });
-    }
-};
+
+        // api request
+        if (add) {
+            await useFetch("/api/addParticipant", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: { id: id.value, date: day.toISOString().split("T")[0], name: name.value },
+            });
+        } else {
+            await useFetch("/api/delParticipant", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: { id: id.value, date: day.toISOString().split("T")[0], name: name.value },
+            });
+        }
+    };
+}
 </script>
 
 <template>

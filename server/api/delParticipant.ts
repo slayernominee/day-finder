@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     if (!body || !body.id || !body.name || !body.date) {
         return {
             status: "error",
+            message: "invalid_body",
         };
     }
 
@@ -13,6 +14,7 @@ export default defineEventHandler(async (event) => {
     if (!exists(id)) {
         return {
             status: "error",
+            message: "id_not_found",
         };
     }
 
@@ -20,6 +22,7 @@ export default defineEventHandler(async (event) => {
     if (!timetable.configured) {
         return {
             status: "error",
+            message: "not_configured",
         };
     }
 
@@ -32,6 +35,7 @@ export default defineEventHandler(async (event) => {
     if (dayIndex === -1) {
         return {
             status: "error",
+            message: "date_not_found",
         };
     }
 

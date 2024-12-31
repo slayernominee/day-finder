@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
     if (!body || !body.id || !body.range || !body.range.start || !body.range.end || !body.project_name) {
         return {
             status: "error",
+            message: "invalid_body",
         };
     }
 
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event) => {
     if (!exists) {
         return {
             status: "error",
+            message: "id_not_found",
         };
     }
 
@@ -23,6 +25,7 @@ export default defineEventHandler(async (event) => {
     if (timetable.configured) {
         return {
             status: "error",
+            message: "already_configured",
         };
     }
 

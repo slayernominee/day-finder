@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
     if (!body || !body.id) {
         return {
             status: "error",
+            message: "invalid_body",
         };
     }
 
@@ -16,6 +17,7 @@ export default defineEventHandler(async (event) => {
     if (!exists(id)) {
         return {
             status: "error",
+            message: "id_not_found",
         };
     }
 
